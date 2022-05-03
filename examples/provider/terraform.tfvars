@@ -1,0 +1,10 @@
+hm_url                    = ""
+issuer_id                 = ""
+private_key               = ""
+tenant_space_name         = "tsname"
+tenant_space_display_name = "tsnamedisplay"
+tenant_name               = "test"
+availability_zone         = "az1"
+region_name               = "pure-us-west"
+storage_service           = "test-storageservice"
+
