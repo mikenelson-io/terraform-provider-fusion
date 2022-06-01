@@ -7,7 +7,7 @@ The Terraform Provider for [Fusion][what-is-fusion] is a plugin for Terraform th
 
 Learn More:
 
-* Read the provider [documentation](docs/index.md).
+* Read the provider [documentation](docs).
 * Get help from [Pure Storage Customer Support][customer-support]
 
 ## Requirements
