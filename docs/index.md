@@ -1,6 +1,6 @@
 ---
 layout: ""
-page_title: "PLACEHOLDER page title"
+page_title: "Fusion Terraform Control"
 description: |-
   PLACEHOLDER description
 ---
