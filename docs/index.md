@@ -2,12 +2,12 @@
 layout: ""
 page_title: "Fusion Terraform Control"
 description: |-
-  PLACEHOLDER description
+  Usage of the Terraform Provider
 ---
 
-# PLACEHOLDER title
+# Fusion Terraform Control
 
-PLACEHOLDER body...
+Usage of the Terraform Provider
 
 ## Example Usage
 
