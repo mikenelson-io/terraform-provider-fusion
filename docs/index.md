@@ -7,7 +7,7 @@ description: |-
 
 # Fusion Terraform Control
 
-Usage of the Terraform Provider
+The Terraform Provider for Fusion is a plugin for Terraform that allows you to interact with Fusion. Fusion is a Pure Storage product that allows you to provision, manage, and consume enterprise storage with the simple on-demand provisioning, with effortless scale, and self-management of the cloud. This provider can be used to manage consumer oriented resources such as volumes, hosts, placement groups, tenant spaces.
 
 ## Example Usage
 
