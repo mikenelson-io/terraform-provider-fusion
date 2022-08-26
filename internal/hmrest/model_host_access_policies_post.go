@@ -21,6 +21,6 @@ type HostAccessPoliciesPost struct {
 	DisplayName string `json:"display_name,omitempty"`
 	// The iSCSI qualified name (IQN) associated with the host
 	Iqn string `json:"iqn"`
-	// The Personality of the Host machine
+	// The Personality of the Host machine, supported personality: windows, linux, esxi, oracle-vm-server. coming personality: aix, hitachi-vsp, hpux, solaris, vms
 	Personality string `json:"personality"`
 }

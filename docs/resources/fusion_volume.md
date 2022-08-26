@@ -19,7 +19,7 @@ description: |-
 
 - `host_names` (Set of String)
 - `name` (String)
-- `placement_group_name` (String) WARNING: Changing this value will cause a new IQN number to be generated and will disrupt initator access to this volume
+- `placement_group_name` (String) WARNING: Changing this value will cause a new IQN number to be generated and will disrupt initiator access to this volume
 - `size` (Number)
 - `storage_class_name` (String)
 - `tenant_name` (String)
@@ -28,12 +28,12 @@ description: |-
 ### Optional
 
 - `display_name` (String)
-- `id` (String) The ID of this resource.
 - `protection_policy_name` (String)
 
 ### Read-Only
 
 - `created_at` (Number)
+- `id` (String) The ID of this resource.
 - `serial_number` (String)
 - `target_iscsi_addresses` (Set of String)
 - `target_iscsi_iqn` (String)

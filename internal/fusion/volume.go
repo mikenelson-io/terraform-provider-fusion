@@ -12,8 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/utilities"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 )
 
 var volumeResourceFunctions *BaseResourceFunctions
@@ -52,7 +52,7 @@ func resourceVolume() *schema.Resource {
 		"placement_group_name": {
 			Type:        schema.TypeString,
 			Required:    true,
-			Description: "WARNING: Changing this value will cause a new IQN number to be generated and will disrupt initator access to this volume",
+			Description: "WARNING: Changing this value will cause a new IQN number to be generated and will disrupt initiator access to this volume",
 		},
 		"protection_policy_name": {
 			Type:     schema.TypeString,
@@ -278,7 +278,6 @@ func (vp *volumeProvider) PrepareDelete(ctx context.Context, client *hmrest.APIC
 	tenantName := d.Get("tenant_name").(string)
 
 	fn := func(ctx context.Context, client *hmrest.APIClient, body RequestSpec) (*hmrest.Operation, error) {
-		// TODO: HM-2437 this should be a patch
 		tflog.Trace(ctx, "removing host assignments before deleting volume")
 		op, _, err := client.VolumesApi.UpdateVolume(ctx, hmrest.VolumePatch{
 			HostAccessPolicies: &hmrest.NullableString{Value: ""},
@@ -287,7 +286,7 @@ func (vp *volumeProvider) PrepareDelete(ctx context.Context, client *hmrest.APIC
 		if err != nil {
 			return &op, err
 		}
-		succeeded, err := WaitOnOperation(ctx, &op, client)
+		succeeded, err := utilities.WaitOnOperation(ctx, &op, client)
 		if err != nil {
 			return &op, err
 		}

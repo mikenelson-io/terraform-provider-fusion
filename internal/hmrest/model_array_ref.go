@@ -20,6 +20,8 @@ type ArrayRef struct {
 	Id string `json:"id"`
 	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
 	Name string `json:"name"`
+	// The kind of the resource (e.g., Volume).
+	Kind string `json:"kind"`
 	// The URI of the resource.
 	SelfLink string `json:"self_link"`
 }

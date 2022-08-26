@@ -20,6 +20,6 @@ type StorageEndpointIscsiDiscoveryInterface struct {
 	// The IPv4 address of the gateway through which this interface will communicate with the network.
 	Gateway string `json:"gateway,omitempty"`
 	// Maximum message transfer unit (packet) size in bytes for this discovery interface.
-	Mtu                int32                      `json:"mtu,omitempty"`
-	SubinterfaceGroups []NetworkInterfaceGroupRef `json:"subinterface_groups,omitempty"`
+	Mtu                    int32                      `json:"mtu,omitempty"`
+	NetworkInterfaceGroups []NetworkInterfaceGroupRef `json:"network_interface_groups,omitempty"`
 }

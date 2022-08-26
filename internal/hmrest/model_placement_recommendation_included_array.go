@@ -15,5 +15,13 @@ SPDX-License-Identifier: Apache-2.0
 package fusion
 
 type PlacementRecommendationIncludedArray struct {
-	Pure1meta *Pure1MetaPlacementRecommendation `json:"pure1meta,omitempty"`
+	// An immutable, globally unique, system generated identifier.
+	Id string `json:"id"`
+	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
+	Name string `json:"name"`
+	// The URI of the resource.
+	SelfLink string `json:"self_link"`
+	// The display name of the resource.
+	DisplayName string                            `json:"display_name,omitempty"`
+	Pure1meta   *Pure1MetaPlacementRecommendation `json:"pure1meta,omitempty"`
 }

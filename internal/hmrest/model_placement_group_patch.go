@@ -16,5 +16,5 @@ package fusion
 
 type PlacementGroupPatch struct {
 	DisplayName *NullableString `json:"display_name,omitempty"`
-	HmArray     *NullableString `json:"hm_array,omitempty"`
+	Array       *NullableString `json:"array,omitempty"`
 }

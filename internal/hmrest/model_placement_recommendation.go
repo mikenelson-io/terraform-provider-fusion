@@ -22,9 +22,16 @@ type PlacementRecommendation struct {
 	// The URI of the resource.
 	SelfLink string `json:"self_link"`
 	// The display name of the resource.
-	DisplayName string `json:"display_name,omitempty"`
+	DisplayName     string           `json:"display_name,omitempty"`
+	Tenant          *TenantRef       `json:"tenant,omitempty"`
+	TenantSpace     *TenantSpaceRef  `json:"tenant_space,omitempty"`
+	PlacementEngine *PlacementEngine `json:"placement_engine,omitempty"`
+	// If not empty, this is the Placement Group ID for which the placement recommendation was made
+	PlacementGroupId   string              `json:"placement_group_id,omitempty"`
+	PlacementGroup     *PlacementGroupRef  `json:"placement_group,omitempty"`
+	SimulatedPlacement *SimulatedPlacement `json:"simulated_placement,omitempty"`
 	// A JSON array of Arrays that the Placement Group can be placed/migrated to
-	Arrays []PlacementRecommendationIncludedArray `json:"arrays,omitempty"`
+	IncludedArrays []PlacementRecommendationIncludedArray `json:"included_arrays,omitempty"`
 	// A JSON array of Arrays that the Placement Group cannot be placed on
 	ExcludedArrays []PlacementRecommendationExcludedArray `json:"excluded_arrays,omitempty"`
 }

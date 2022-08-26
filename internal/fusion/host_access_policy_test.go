@@ -13,14 +13,14 @@ import (
 	"strings"
 	"testing"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 )
 
 func TestAccHostAccessPolicy_basic(t *testing.T) {
-	rNameConfig := fmt.Sprintf("host_access_policy_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("host_access_policy")
 	rName := "fusion_host_access_policy." + rNameConfig
 	displayName := acctest.RandomWithPrefix("host-access-policy-display-name")
 	hostAccessPolicyName := acctest.RandomWithPrefix("test_hap")
@@ -47,7 +47,7 @@ func TestAccHostAccessPolicy_basic(t *testing.T) {
 }
 
 func TestAccHostAccessPolicy_RequiredAttributes(t *testing.T) {
-	rNameConfig := fmt.Sprintf("host_access_policy_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("host_access_policy")
 	displayName := acctest.RandomWithPrefix("host-access-policy-display-name")
 	hostAccessPolicyName := acctest.RandomWithPrefix("test_hap")
 	iqn := randIQN()

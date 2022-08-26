@@ -14,15 +14,12 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-type PlacementGroupPost struct {
-	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
-	Name string `json:"name"`
-	// The display name of the resource.
-	DisplayName string `json:"display_name,omitempty"`
-	// The name of the Availability Zone that this PG should be created.
+// Additional description about the Placement Group, had it been created. This is only used to make a PlacementRecommendation for a new Placement Group that doesn't already exist.
+type SimulatedPlacementPost struct {
+	// If Placement Group would have been created, which Availability Zone would it be created in
 	AvailabilityZone string `json:"availability_zone"`
-	// The name of the Region associated with the mentioned Availability Zone.
+	// If Placement Group would have been created, which Region would it be created in
 	Region string `json:"region"`
-	// The name of the parent Storage Service
+	// If Placement Group would have been created, which Storage Service would it be assigned
 	StorageService string `json:"storage_service"`
 }

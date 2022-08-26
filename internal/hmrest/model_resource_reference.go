@@ -14,12 +14,14 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// A reference to a resource -- contains id, name and self_link.
+// A reference to a resource -- contains id, name, kind and self_link.
 type ResourceReference struct {
 	// An immutable, globally unique, system generated identifier.
 	Id string `json:"id"`
 	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
 	Name string `json:"name"`
+	// The kind of the resource (e.g., Volume).
+	Kind string `json:"kind"`
 	// The URI of the resource.
 	SelfLink string `json:"self_link"`
 }

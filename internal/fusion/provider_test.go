@@ -15,6 +15,8 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/utilities"
+
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-log/tfsdklog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -195,7 +197,7 @@ func testCreateTenant(ctx context.Context, client *hmrest.APIClient, t *testing.
 		t.Fatalf("Failed to create test tenant %s, error: %s", testAccTenant, err)
 	}
 
-	succeeded, err := WaitOnOperation(ctx, &op, client)
+	succeeded, err := utilities.WaitOnOperation(ctx, &op, client)
 	if err != nil {
 		t.Fatalf("Failed to create test tenant %s, error: %s", testAccTenant, err)
 	} else if !succeeded {
@@ -229,7 +231,7 @@ func testCreateStorageService(ctx context.Context, client *hmrest.APIClient, t *
 		t.Fatalf("Failed to create test storage service %s, error: %s", testAccStorageService, err)
 	}
 
-	succeeded, err := WaitOnOperation(ctx, &op, client)
+	succeeded, err := utilities.WaitOnOperation(ctx, &op, client)
 	if err != nil {
 		t.Fatalf("Failed to create test storage service %s, error: %s", testAccStorageService, err)
 	} else if !succeeded {

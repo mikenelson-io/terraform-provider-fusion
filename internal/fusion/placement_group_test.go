@@ -13,10 +13,10 @@ import (
 	"strings"
 	"testing"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 )
 
 const (
@@ -25,7 +25,7 @@ const (
 )
 
 func TestAccPlacementGroup_basic(t *testing.T) {
-	rNameConfig := fmt.Sprintf("placementgroup_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("placementgroup")
 	rName := "fusion_placement_group." + rNameConfig
 	displayName := acctest.RandomWithPrefix("placement-group-display-name")
 	placementGroupName := acctest.RandomWithPrefix("test_pg")
@@ -53,7 +53,7 @@ func TestAccPlacementGroup_basic(t *testing.T) {
 }
 
 func TestAccPlacementGroup_EmptyAttributeValues(t *testing.T) {
-	rNameConfig := fmt.Sprintf("placementgroup_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("placementgroup")
 	displayName := acctest.RandomWithPrefix("placement-group-display-name")
 	placementGroupName := acctest.RandomWithPrefix("test_pg")
 	tsName := acctest.RandomWithPrefix("ts-pgtest")
@@ -83,7 +83,7 @@ func TestAccPlacementGroup_EmptyAttributeValues(t *testing.T) {
 }
 
 func TestAccPlacementGroup_MissingAttributes(t *testing.T) {
-	rNameConfig := fmt.Sprintf("placementgroup_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("placementgroup")
 	displayName := acctest.RandomWithPrefix("placement-group-display-name")
 	placementGroupName := acctest.RandomWithPrefix("test_pg")
 	tsName := acctest.RandomWithPrefix("ts-pgtest")

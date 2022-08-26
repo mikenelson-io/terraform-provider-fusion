@@ -28,7 +28,9 @@ description: |-
 
 - `destroy_snapshots_on_delete` (Boolean) Before deleting placement group, snapshots within the placement group will be deleted. If `false` then any snapshots will need to be deleted as a separate step before removing the placement group
 - `display_name` (String)
+
+### Read-Only
+
 - `id` (String) The ID of this resource.
-- `placement_engine` (String)
 
 

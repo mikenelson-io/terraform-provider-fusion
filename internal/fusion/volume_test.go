@@ -11,11 +11,11 @@ import (
 	"strings"
 	"testing"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/utilities"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 )
 
 func TestAccVolume_basic(t *testing.T) {
@@ -37,22 +37,21 @@ func TestAccVolume_basic(t *testing.T) {
 	host2 := testFusionResource{RName: "host2", Name: acctest.RandomWithPrefix("host2-volTest")}
 	storageService0Name := acctest.RandomWithPrefix("ss0-volTest")
 	storageService1Name := acctest.RandomWithPrefix("ss1-volTest")
-	// TODO: Re-enable with HM-2687
-	//protectionPolicy0Name := acctest.RandomWithPrefix("pp0-volTest")
-	//protectionPolicy1Name := acctest.RandomWithPrefix("pp1-volTest")
+	protectionPolicy0Name := acctest.RandomWithPrefix("pp0-volTest")
+	protectionPolicy1Name := acctest.RandomWithPrefix("pp1-volTest")
 	storageClass0Name := acctest.RandomWithPrefix("sc0-volTest")
 	storageClass1Name := acctest.RandomWithPrefix("sc1-volTest")
 
 	// Initial state
 	volState0 := testVolume{
-		RName:       "test_volume",
-		Name:        acctest.RandomWithPrefix("test_vol"),
-		DisplayName: "initial display name",
-		TenantSpace: ts,
-		//ProtectionPolicyName: protectionPolicy0Name,
-		StorageClassName: storageClass0Name,
-		PlacementGroup:   pg0,
-		Size:             1 << 20,
+		RName:                "test_volume",
+		Name:                 acctest.RandomWithPrefix("test_vol"),
+		DisplayName:          "initial display name",
+		TenantSpace:          ts,
+		ProtectionPolicyName: protectionPolicy0Name,
+		StorageClassName:     storageClass0Name,
+		PlacementGroup:       pg0,
+		Size:                 1 << 20,
 	}
 
 	// Change everything
@@ -66,7 +65,7 @@ func TestAccVolume_basic(t *testing.T) {
 	// Remove and add hosts at the same time, also change protection policy
 	volState2 := volState1
 	volState2.Hosts = []testFusionResource{host1, host2}
-	//volState2.ProtectionPolicyName = protectionPolicy1Name
+	volState2.ProtectionPolicyName = protectionPolicy1Name
 
 	// Remove a host, and change some other things back
 	volState3 := volState2
@@ -96,7 +95,7 @@ func TestAccVolume_basic(t *testing.T) {
 			resource.TestCheckResourceAttr(r, "display_name", vol.DisplayName),
 			resource.TestCheckResourceAttr(r, "tenant_name", testAccTenant),
 			resource.TestCheckResourceAttr(r, "tenant_space_name", vol.TenantSpace.Name),
-			// resource.TestCheckResourceAttr(r, "protection_policy_name", vol.ProtectionPolicyName),
+			resource.TestCheckResourceAttr(r, "protection_policy_name", vol.ProtectionPolicyName),
 			resource.TestCheckResourceAttr(r, "storage_class_name", vol.StorageClassName),
 			resource.TestCheckResourceAttr(r, "placement_group_name", vol.PlacementGroup.Name),
 			resource.TestCheckResourceAttr(r, "host_names.#", fmt.Sprintf("%d", len(vol.Hosts))),
@@ -121,29 +120,28 @@ func TestAccVolume_basic(t *testing.T) {
 					if err != nil {
 						t.Errorf("%s: %s", userMessage, err)
 					}
-					succeeded, err := WaitOnOperation(ctx, &op, hmClient)
+					succeeded, err := utilities.WaitOnOperation(ctx, &op, hmClient)
 					if !succeeded || err != nil {
 						t.Errorf("operation failure %s succeeded:%v error:%v", userMessage, succeeded, err)
 					}
 				}
 			}
 
-			// TODO: Re-enable with HM-2687
-			//doOp("protectionPolicy0")(hmClient.ProtectionPoliciesApi.CreateProtectionPolicy(ctx, hmrest.ProtectionPolicyPost{
-			//	Name: protectionPolicy0Name,
-			//	Objectives: []hmrest.OneOfProtectionPolicyPostObjectivesItems{
-			//		hmrest.Rpo{Type_: "RPO", Rpo: "PT6H"},
-			//		hmrest.Retention{Type_: "Retention", After: "PT24H"},
-			//	},
-			//}, nil))
+			doOp("protectionPolicy0")(hmClient.ProtectionPoliciesApi.CreateProtectionPolicy(ctx, hmrest.ProtectionPolicyPost{
+				Name: protectionPolicy0Name,
+				Objectives: []hmrest.OneOfProtectionPolicyPostObjectivesItems{
+					hmrest.Rpo{Type_: "RPO", Rpo: "PT6H"},
+					hmrest.Retention{Type_: "Retention", After: "PT24H"},
+				},
+			}, nil))
 
-			//doOp("protectionPolicy1")(hmClient.ProtectionPoliciesApi.CreateProtectionPolicy(ctx, hmrest.ProtectionPolicyPost{
-			//	Name: protectionPolicy1Name,
-			//	Objectives: []hmrest.OneOfProtectionPolicyPostObjectivesItems{
-			//		hmrest.Rpo{Type_: "RPO", Rpo: "PT6H"},
-			//		hmrest.Retention{Type_: "Retention", After: "PT24H"},
-			//	},
-			//}, nil))
+			doOp("protectionPolicy1")(hmClient.ProtectionPoliciesApi.CreateProtectionPolicy(ctx, hmrest.ProtectionPolicyPost{
+				Name: protectionPolicy1Name,
+				Objectives: []hmrest.OneOfProtectionPolicyPostObjectivesItems{
+					hmrest.Rpo{Type_: "RPO", Rpo: "PT6H"},
+					hmrest.Retention{Type_: "Retention", After: "PT24H"},
+				},
+			}, nil))
 
 			doOp("storageService0")(hmClient.StorageServicesApi.CreateStorageService(ctx, hmrest.StorageServicePost{
 				Name:          storageService0Name,
@@ -222,7 +220,7 @@ func testVolumeExists(rName string, t *testing.T) resource.TestCheckFunc {
 		checkAttr(directVolume.DisplayName, "display_name")
 		checkAttr(directVolume.Tenant.Name, "tenant_name")
 		checkAttr(directVolume.TenantSpace.Name, "tenant_space_name")
-		//checkAttr(directVolume.ProtectionPolicy.Name, "protection_policy_name")
+		checkAttr(directVolume.ProtectionPolicy.Name, "protection_policy_name")
 		checkAttr(directVolume.StorageClass.Name, "storage_class_name")
 		checkAttr(directVolume.PlacementGroup.Name, "placement_group_name")
 
@@ -275,14 +273,14 @@ func testVolumeConfig(vol testVolume) string {
 resource "fusion_volume" "%[1]s" {
 		name          = "%[2]s"
 		display_name  = "%[3]s"
-		# protection_policy_name = "%[4]s"
+		protection_policy_name = "%[4]s"
 		tenant_name        = "%[5]s"
 		tenant_space_name  = fusion_tenant_space.%[6]s.name
 		storage_class_name = "%[7]s"
 		size          = %[8]d
 		host_names = [%[9]s]
 		placement_group_name = fusion_placement_group.%[10]s.name
-}`, vol.RName, vol.Name, vol.DisplayName, "", // "" should be vol.ProtectionPolicyName after HM-2687
+}`, vol.RName, vol.Name, vol.DisplayName, vol.ProtectionPolicyName,
 		testAccTenant, vol.TenantSpace.RName, vol.StorageClassName, vol.Size, hapList, vol.PlacementGroup.RName)
 }
 

@@ -20,7 +20,14 @@ type PlacementRecommendationPost struct {
 	Name string `json:"name"`
 	// The display name of the resource.
 	DisplayName string `json:"display_name,omitempty"`
-	// The link to the placement group that we would like to generate a placement recommendation report on
-	PlacementGroupLink string           `json:"placement_group_link"`
-	PlacementEngine    *PlacementEngine `json:"placement_engine,omitempty"`
+	// Deprecated. Use placement_group instead. The link to the placement group that we would like to generate a placement recommendation report on
+	PlacementGroupLink string `json:"placement_group_link,omitempty"`
+	// Placement Group you would like to generate a placement recommendation report on. For placement of new placement group, leave this blank, and instead fill in simulated_placement
+	PlacementGroup string `json:"placement_group,omitempty"`
+	// Tenant that Placement Group belongs to. For placement of new placement group, enter Tenant where the Placement Group would have been created in
+	Tenant string `json:"tenant"`
+	// Tenant Space that Placement Group belongs to. For placement of new placement group, enter TenantSpace where Placement Group would have been created in
+	TenantSpace        string                  `json:"tenant_space"`
+	PlacementEngine    *PlacementEngine        `json:"placement_engine,omitempty"`
+	SimulatedPlacement *SimulatedPlacementPost `json:"simulated_placement,omitempty"`
 }

@@ -18,6 +18,6 @@ type StorageEndpointIscsiDiscoveryInterfacePost struct {
 	// The IPv4 address for this interface.
 	Address string `json:"address"`
 	// The IPv4 address of the gateway through which this interface will communicate with the network.
-	Gateway            string   `json:"gateway,omitempty"`
-	SubinterfaceGroups []string `json:"subinterface_groups,omitempty"`
+	Gateway                string   `json:"gateway,omitempty"`
+	NetworkInterfaceGroups []string `json:"network_interface_groups,omitempty"`
 }

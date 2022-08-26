@@ -16,6 +16,6 @@ package fusion
 
 // (Provider)
 type StorageServicePatch struct {
-	DisplayName  *NullableString      `json:"display_name,omitempty"`
-	HardareTypes *NullableStringArray `json:"hardare_types,omitempty"`
+	DisplayName   *NullableString      `json:"display_name,omitempty"`
+	HardwareTypes *NullableStringArray `json:"hardware_types,omitempty"`
 }

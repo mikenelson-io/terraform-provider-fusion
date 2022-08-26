@@ -335,8 +335,10 @@ OperationsApiService Gets a list of Operations matching the criteria.
      * @param "ResourceKind" (optional.String) -  The kind of resource on which the Operation was performed.
      * @param "ResourceId" (optional.String) -  The ID of resource on which the Operation was performed.
      * @param "Status" (optional.String) -  The status of the Operation.
-     * @param "Error_" (optional.Bool) -  Whether to return Operations which had errors.
-     * @param "Attributes" (optional.String) -
+     * @param "Sort" (optional.String) -
+     * @param "Limit" (optional.Int32) -
+     * @param "Offset" (optional.Int32) -
+     * @param "CreatedAfter" (optional.String) -
 @return OperationList
 */
 
@@ -350,8 +352,10 @@ type OperationsApiListOperationsOpts struct {
 	ResourceKind      optional.String
 	ResourceId        optional.String
 	Status            optional.String
-	Error_            optional.Bool
-	Attributes        optional.String
+	Sort              optional.String
+	Limit             optional.Int32
+	Offset            optional.Int32
+	CreatedAfter      optional.String
 }
 
 func (a *OperationsApiService) ListOperations(ctx context.Context, localVarOptionals *OperationsApiListOperationsOpts) (OperationList, *http.Response, error) {
@@ -388,11 +392,17 @@ func (a *OperationsApiService) ListOperations(ctx context.Context, localVarOptio
 	if localVarOptionals != nil && localVarOptionals.Status.IsSet() {
 		localVarQueryParams.Add("status", parameterToString(localVarOptionals.Status.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Error_.IsSet() {
-		localVarQueryParams.Add("error", parameterToString(localVarOptionals.Error_.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
+		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Attributes.IsSet() {
-		localVarQueryParams.Add("attributes", parameterToString(localVarOptionals.Attributes.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
+		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.CreatedAfter.IsSet() {
+		localVarQueryParams.Add("created_after", parameterToString(localVarOptionals.CreatedAfter.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}

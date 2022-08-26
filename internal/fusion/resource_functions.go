@@ -8,10 +8,9 @@ package fusion
 import (
 	"context"
 	"fmt"
-	"time"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/utilities"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -107,14 +106,14 @@ func (f *BaseResourceFunctions) resourceCreate(ctx context.Context, d *schema.Re
 	op, err := callAPI(ctx, client, body)
 	if err != nil {
 		utilities.TraceError(ctx, err)
-		return processClientError(ctx, "create", err)
+		return utilities.ProcessClientError(ctx, "create", err)
 	}
 
 	// Wait on Operation
-	succeeded, err := WaitOnOperation(ctx, op, client) // updates op with latest
+	succeeded, err := utilities.WaitOnOperation(ctx, op, client) // updates op with latest
 	if err != nil {
 		utilities.TraceError(ctx, err)
-		return processClientError(ctx, "get wait status", err)
+		return utilities.ProcessClientError(ctx, "get wait status", err)
 	}
 
 	if !succeeded {
@@ -132,7 +131,7 @@ func (f *BaseResourceFunctions) resourceCreate(ctx context.Context, d *schema.Re
 func (f *BaseResourceFunctions) resourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	client, _ := f.resourceBoilerplate(ctx, "Read", d, m)
 	err := f.Provider.ReadResource(ctx, client, d)
-	return processClientError(ctx, "read", err)
+	return utilities.ProcessClientError(ctx, "read", err)
 }
 
 func (f *BaseResourceFunctions) resourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -143,29 +142,9 @@ func (f *BaseResourceFunctions) resourceUpdate(ctx context.Context, d *schema.Re
 		return diag.FromErr(err)
 	}
 
-	// Start operations for each update
-	for i, p := range patches {
-		ctx := tflog.With(ctx, "patch_idx", i)
-		tflog.Debug(ctx, "Start Operation to apply update", "patch_num", i, "patch", p)
-		op, err := callAPI(ctx, client, p)
-		traceOperation(ctx, op, "resourceUpdate_patch")
-		if err != nil {
-			utilities.TraceError(ctx, err)
-			return processClientError(ctx, "update", err)
-		}
-
-		// Right now we are forcing all the operations to complete serially
-		// because there are certain patch operations that need to happen
-		// in order.  Later on we can get more clever and try to come up
-		// with patch groups that can be done in parallel together
-		succeeded, err := WaitOnOperation(ctx, op, client)
-		if err != nil {
-			utilities.TraceError(ctx, err)
-			return processClientError(ctx, "get wait status", err)
-		}
-		if !succeeded {
-			return diag.Errorf("Operation failed Message:%s ID:%s", op.Error_.Message, op.Id)
-		}
+	err = executePatches(ctx, callAPI, patches, client, "resourceUpdate")
+	if err != nil {
+		return utilities.ProcessClientError(ctx, "resourceUpdate", err)
 	}
 
 	return f.resourceRead(ctx, d, m)
@@ -182,14 +161,12 @@ func (f *BaseResourceFunctions) resourceDelete(ctx context.Context, d *schema.Re
 
 	op, err := callAPI(ctx, client, nil) // no body for delete
 	if err != nil {
-		utilities.TraceError(ctx, err)
-		return processClientError(ctx, "delete", err)
+		return utilities.ProcessClientError(ctx, "delete", err)
 	}
 
-	succeeded, err := WaitOnOperation(ctx, op, client)
+	succeeded, err := utilities.WaitOnOperation(ctx, op, client)
 	if err != nil {
-		utilities.TraceError(ctx, err)
-		return processClientError(ctx, "get wait status", err)
+		return utilities.ProcessClientError(ctx, "get wait status", err)
 	}
 
 	if !succeeded {
@@ -198,6 +175,32 @@ func (f *BaseResourceFunctions) resourceDelete(ctx context.Context, d *schema.Re
 		return diag.Errorf(op.Error_.Message)
 	}
 
+	return nil
+}
+
+func executePatches(ctx context.Context, fn InvokeWriteAPI, patches []ResourcePatch, client *hmrest.APIClient, opSource string) error {
+	// Start operations for each update
+	for i, p := range patches {
+		ctx := tflog.With(ctx, "patch_idx", i)
+		tflog.Debug(ctx, "Starting operation to apply a patch", "patch_op", opSource, "patch_num", i, "patch", p)
+		op, err := fn(ctx, client, p)
+		utilities.TraceOperation(ctx, op, "Applying Patch")
+		if err != nil {
+			return err
+		}
+
+		// Right now we are forcing all the operations to complete serially
+		// because there are certain patch operations that need to happen
+		// in order.  Later on we can get more clever and try to come up
+		// with patch groups that can be done in parallel together
+		succeeded, err := utilities.WaitOnOperation(ctx, op, client)
+		if err != nil {
+			return err
+		}
+		if !succeeded {
+			return fmt.Errorf("operation failed Message:%s ID:%s", op.Error_.Message, op.Id)
+		}
+	}
 	return nil
 }
 
@@ -221,52 +224,6 @@ func (f *BaseResourceFunctions) resourceBoilerplate(ctx context.Context, action 
 	client := m.(*hmrest.APIClient)
 
 	return client, ctx
-}
-
-// Wait on an operation until its status reaches Succeeded (or Completed) or Failed.
-// Return succeeded = true if status reaches Succeeded (or Completed), Failed if status reached Failed, and err otherwise.
-// On return,
-//  op will be up to date with the most recent GET of the operation, EVEN when we're returning an error.
-//	if err != nil, then we have an error. Ignore succeeded (it will be false, but it doesn't mean the operation failed.)
-//  If err == nil, then check succeeded. It is true iff (op.Status == "Succeeded" || op.Status == "Completed") && op.Status != "Failed"
-func WaitOnOperation(ctx context.Context, op *hmrest.Operation, client *hmrest.APIClient) (succeeded bool, err error) {
-	traceOperation(ctx, op, "waitOnOperation")
-	if op.Status == "" && op.Id == "" && op.RetryIn == 0 {
-		tflog.Error(ctx, "waitOnOperation for null op")
-		return false, fmt.Errorf("waitOnOperation for null op")
-	}
-	for op.Status != "Succeeded" && op.Status != "Completed" && op.Status != "Failed" {
-		tflog.Debug(ctx, "Waiting for operation", "op_type", op.RequestType, "op_id", op.Id, "op_status", op.Status, "op_retry_in", op.RetryIn)
-		time.Sleep(time.Duration(op.RetryIn) * time.Millisecond)
-		opNew, _, err := client.OperationsApi.GetOperation(ctx, op.Id, nil)
-		traceOperation(ctx, &opNew, "waitOnOperation")
-		utilities.TraceError(ctx, err)
-		if err != nil {
-			return false, err
-		}
-		*op = opNew
-	}
-
-	// Now op.Status must be Succeeded or Completed or Failed.
-	if op.Status == "Failed" {
-		tflog.Error(ctx, "waitOnOperation FAILED with Error", "error_message", op.Error_, "operation", op)
-		return false, nil
-	}
-
-	// op.Status must be Succeeded or Completed.
-	traceOperation(ctx, op, "waitOnOperation Succeeded")
-	return true, nil
-}
-
-func traceOperation(ctx context.Context, op *hmrest.Operation, userMessage string) {
-	tflog.Trace(ctx, "trace_operation",
-		"user_message", userMessage,
-		"op_id", op.Id,
-		"op_request_type", op.RequestType,
-		"op_error_dump", fmt.Sprintf("%#v", op.Error_),
-		"op_status", op.Status,
-		"op_retry_in", op.RetryIn,
-	)
 }
 
 //
@@ -293,15 +250,3 @@ func rdStringDefault(ctx context.Context, d *schema.ResourceData, key string, de
 	return value
 }
 func rdInt(d *schema.ResourceData, key string) int { return d.Get(key).(int) }
-
-func processClientError(ctx context.Context, op string, err error) diag.Diagnostics {
-	modelError, convError := hmrest.ToModelError(err)
-	if convError != nil {
-		tflog.Warn(ctx, "Error while converting error", "error_message", convError.Error(),
-			"unconverted error", err, "operation", op)
-		return diag.FromErr(err)
-	} else {
-		tflog.Error(ctx, "REST ", "operation", op, "error_message", modelError.Message)
-		return diag.Errorf(modelError.Message)
-	}
-}

@@ -24,7 +24,7 @@ import (
 
 // Creates and destroys
 func TestAccTenantSpace_basic(t *testing.T) {
-	rNameConfig := fmt.Sprintf("tenant_space_test_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("tenant_space_test")
 	rName := "fusion_tenant_space." + rNameConfig
 	displayName1 := acctest.RandomWithPrefix("tenant-space-display-name")
 	tenantSpaceName := acctest.RandomWithPrefix("test_ts")
@@ -50,7 +50,7 @@ func TestAccTenantSpace_basic(t *testing.T) {
 
 // Updates display name
 func TestAccTenantSpace_update(t *testing.T) {
-	rNameConfig := fmt.Sprintf("tenant_space_test_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("tenant_space_test")
 	rName := "fusion_tenant_space." + rNameConfig
 	displayName1 := acctest.RandomWithPrefix("tenant-space-display-name")
 	displayName2 := acctest.RandomWithPrefix("tenant-space-display-name2")
@@ -114,7 +114,7 @@ func TestAccTenantSpace_update(t *testing.T) {
 }
 
 func TestAccTenantSpace_attributes(t *testing.T) {
-	rNameConfig := fmt.Sprintf("tenant_space_test_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("tenant_space_test")
 	rName := "fusion_tenant_space." + rNameConfig
 	displayName1 := acctest.RandomWithPrefix("tenant-space-display-name")
 	tenantSpaceName := acctest.RandomWithPrefix("tenant-space-name")
@@ -160,12 +160,12 @@ func TestAccTenantSpace_attributes(t *testing.T) {
 }
 
 func TestAccTenantSpace_multiple(t *testing.T) {
-	rNameConfig := fmt.Sprintf("tenant_space_test_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig := acctest.RandomWithPrefix("tenant_space_test")
 	rName := "fusion_tenant_space." + rNameConfig
 	displayName1 := acctest.RandomWithPrefix("tenant-space-display-name")
 	tenantSpaceName := acctest.RandomWithPrefix("tenant-space-name")
 
-	rNameConfig2 := fmt.Sprintf("tenant_space_test_%d", acctest.RandIntRange(0, 1000))
+	rNameConfig2 := acctest.RandomWithPrefix("tenant_space_test2")
 	rName2 := "fusion_tenant_space." + rNameConfig
 	displayName2 := acctest.RandomWithPrefix("tenant-space-display-name")
 	tenantSpaceName2 := acctest.RandomWithPrefix("tenant-space-name")

@@ -14,7 +14,7 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// Request contains the requested resource
+// Request contains the requested resource. Note that if the resource no longer exists, only the resource's id and kind is returned (name and self_link will be empty).
 type OperationRequest struct {
 	Resource *ResourceReference `json:"resource,omitempty"`
 }

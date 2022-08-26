@@ -33,6 +33,6 @@ type Operation struct {
 	// Recommended time to wait before getting the operation again to observe status change (polling interval). Unit is milliseconds, e.g., 100.
 	RetryIn int32       `json:"retry_in"`
 	Error_  *ModelError `json:"error,omitempty"`
-	// The time the operation was created, in milliseconds since the Unix.
+	// The time that the operation was created, in milliseconds since the Unix epoch.
 	CreatedAt int64 `json:"created_at"`
 }

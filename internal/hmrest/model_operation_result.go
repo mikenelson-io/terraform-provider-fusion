@@ -14,7 +14,7 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// Contains the result of the operation: a resource reference (empty for Deletes)
+// Contains the result of the operation: a resource reference. Note that if the resource no longer exists, only the resource's id and kind is returned (name and self_link will be empty).
 type OperationResult struct {
 	Resource *ResourceReference `json:"resource,omitempty"`
 }

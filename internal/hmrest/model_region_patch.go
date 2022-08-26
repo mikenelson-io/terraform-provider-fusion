@@ -14,14 +14,6 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// A reference to a Role Assignment.
-type RoleAssignmentRef struct {
-	// An immutable, globally unique, system generated identifier.
-	Id string `json:"id"`
-	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
-	Name string `json:"name"`
-	// The kind of the resource (e.g., Volume).
-	Kind string `json:"kind"`
-	// The URI of the resource.
-	SelfLink string `json:"self_link"`
+type RegionPatch struct {
+	DisplayName *NullableString `json:"display_name,omitempty"`
 }

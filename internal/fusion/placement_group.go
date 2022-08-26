@@ -8,23 +8,14 @@ package fusion
 import (
 	"context"
 	"fmt"
+
 	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/utilities"
 	"github.com/antihax/optional"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 )
-
-var validPlacementEngines = []hmrest.PlacementEngine{hmrest.PURE1META_PlacementEngine, hmrest.HEURISTICS_PlacementEngine}
-var validPlacementEngineStrings []string
-
-func init() {
-	for _, i := range validPlacementEngines {
-		validPlacementEngineStrings = append(validPlacementEngineStrings, string(i))
-	}
-}
 
 var placementGroupResourceFunctions *BaseResourceFunctions
 
@@ -63,12 +54,6 @@ func resourcePlacementGroup() *schema.Resource {
 			Type:     schema.TypeString,
 			Required: true,
 		},
-		"placement_engine": {
-			Type:         schema.TypeString,
-			Optional:     true,
-			Computed:     true,
-			ValidateFunc: validation.StringInSlice(validPlacementEngineStrings, false),
-		},
 		"destroy_snapshots_on_delete": {
 			Type:     schema.TypeBool,
 			Optional: true,
@@ -86,19 +71,6 @@ type placementGroupProvider struct {
 	BaseResourceProvider
 }
 
-func placementEngineFromString(s string) *hmrest.PlacementEngine {
-	if s == "" {
-		return nil
-	}
-	for _, i := range validPlacementEngines {
-		if s == string(i) {
-			return &i
-		}
-	}
-	// We shouldn't get here, we already prevalidate values comming from the resource parameter
-	panic(fmt.Sprintf("Unexpected value: %s", s))
-}
-
 func (vp *placementGroupProvider) PrepareCreate(ctx context.Context, d *schema.ResourceData) (InvokeWriteAPI, ResourcePost, error) {
 	name := rdString(ctx, d, "name")
 	displayName := rdStringDefault(ctx, d, "display_name", name)
@@ -109,7 +81,6 @@ func (vp *placementGroupProvider) PrepareCreate(ctx context.Context, d *schema.R
 	regionName := rdString(ctx, d, "region_name")
 	availabilityZone := rdString(ctx, d, "availability_zone_name")
 
-	placementEngine := placementEngineFromString(rdString(ctx, d, "placement_engine"))
 	tflog.Debug(ctx, "PlacementGroup.CreateResource()", "ts", tenantSpaceName, "name", name)
 
 	body := hmrest.PlacementGroupPost{
@@ -117,7 +88,6 @@ func (vp *placementGroupProvider) PrepareCreate(ctx context.Context, d *schema.R
 		DisplayName:      displayName,
 		Region:           regionName,
 		AvailabilityZone: availabilityZone,
-		PlacementEngine:  placementEngine,
 		StorageService:   storageService,
 	}
 
@@ -141,7 +111,6 @@ func (vp *placementGroupProvider) ReadResource(ctx context.Context, client *hmre
 	d.Set("tenant_space_name", pg.TenantSpace.Name)
 	d.Set("availability_zone_name", pg.AvailabilityZone.Name)
 	d.Set("storage_service_name", pg.StorageService.Name)
-	d.Set("placement_engine", pg.PlacementEngine)
 
 	az, _, err := client.AvailabilityZonesApi.GetAvailabilityZoneById(ctx, pg.AvailabilityZone.Id, nil)
 	if err != nil {
@@ -159,33 +128,37 @@ func (vp *placementGroupProvider) PrepareDelete(ctx context.Context, client *hmr
 	destroySnaps := d.Get("destroy_snapshots_on_delete").(bool)
 
 	fn := func(ctx context.Context, client *hmrest.APIClient, body RequestSpec) (*hmrest.Operation, error) {
-		// TODO: HM-2437 this should be patches
 		if destroySnaps {
-			tflog.Debug(ctx, "Destroying relevant snapshots")
+			tflog.Debug(ctx, "Destroying relevant snapshots if they exist", "tenant_name", tenantName, "tenant_space_name", tenantSpaceName)
 			snapshots, _, err := client.SnapshotsApi.ListSnapshots(ctx, tenantName, tenantSpaceName, &hmrest.SnapshotsApiListSnapshotsOpts{
 				PlacementGroup: optional.NewString(placementGroupName),
 			})
 			if err != nil {
-				tflog.Error(ctx, "failed listing snapshots", "tenant_name", tenantName, "tenant_space_name", tenantSpaceName)
+				tflog.Error(ctx, "Failed listing snapshots", "tenant_name", tenantName, "tenant_space_name", tenantSpaceName)
 				utilities.TraceError(ctx, err)
 				return nil, err
 			}
-			for _, snap := range snapshots.Items {
-				tflog.Info(ctx, "Deleting Snapshot", "name", snap.Name)
-				op, _, err := client.SnapshotsApi.DeleteSnapshot(ctx, tenantName, tenantSpaceName, snap.Name, nil)
-				if err != nil {
-					utilities.TraceError(ctx, err)
+			if len(snapshots.Items) > 0 {
+				tflog.Info(ctx, "Deleting Snapshots in order to delete Placement Group", "placement_group", placementGroupName)
+				var patches []ResourcePatch
+				for _, snap := range snapshots.Items {
+					tflog.Trace(ctx, "Constructing Patch to Delete Snapshot", "name", snap.Name)
+					patches = append(patches, snap.Name)
+				}
+				fn := func(ctx context.Context, client *hmrest.APIClient, body RequestSpec) (*hmrest.Operation, error) {
+					op, _, err := client.SnapshotsApi.DeleteSnapshot(ctx, tenantName, tenantSpaceName, body.(string), nil)
+					if err != nil {
+						tflog.Error(ctx, "failed deleting a snapshot as part of deleting placement group",
+							"snapshot_name", body.(string))
+					}
 					return &op, err
 				}
-				succeeded, err := WaitOnOperation(ctx, &op, client)
+				err := executePatches(ctx, fn, patches, client, "deleteSnap")
 				if err != nil {
-					utilities.TraceError(ctx, err)
-					return &op, err
+					return nil, err
 				}
-				if !succeeded {
-					tflog.Error(ctx, "failed deleting a snapshot", "snapshot_name", snap.Name)
-					return &op, fmt.Errorf("failed deleting a snapshot as part of deleting volume")
-				}
+			} else {
+				tflog.Debug(ctx, "No snapshots found", "tenant_name", tenantName, "tenant_space_name", tenantSpaceName)
 			}
 		}
 

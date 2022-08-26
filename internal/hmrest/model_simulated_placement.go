@@ -14,14 +14,8 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// A reference to a Role Assignment.
-type RoleAssignmentRef struct {
-	// An immutable, globally unique, system generated identifier.
-	Id string `json:"id"`
-	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
-	Name string `json:"name"`
-	// The kind of the resource (e.g., Volume).
-	Kind string `json:"kind"`
-	// The URI of the resource.
-	SelfLink string `json:"self_link"`
+// Additional description about the Placement Group, had it been created. This is only used to make a PlacementRecommendation for a new Placement Group that doesn't already exist.
+type SimulatedPlacement struct {
+	AvailabilityZone *AvailabilityZoneRef `json:"availability_zone,omitempty"`
+	StorageService   *StorageServiceRef   `json:"storage_service,omitempty"`
 }

@@ -19,9 +19,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.org/x/oauth2"
 
-	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/auth"
 	"github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/utilities"
+	hmrest "github.com/PureStorage-OpenConnect/terraform-provider-fusion/internal/hmrest"
 )
 
 const (
