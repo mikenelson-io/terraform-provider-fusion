@@ -2,7 +2,6 @@ module github.com/PureStorage-OpenConnect/terraform-provider-fusion
 
 go 1.18
 
-
 require (
 	github.com/antihax/optional v1.0.0
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
