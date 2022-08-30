@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        name: temp fix for gpg
+        uses: export GPG_TTY=$(tty)
+      -
         name: Checkout
         uses: actions/checkout@v3
       -
