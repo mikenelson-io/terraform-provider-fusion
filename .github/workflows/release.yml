@@ -19,9 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: temp fix for gpg
-        run: export GPG_TTY=$(tty)
-      -
         name: Checkout
         uses: actions/checkout@v3
       -
@@ -41,7 +38,7 @@ jobs:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
       -
         name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2.9.1
+        uses: goreleaser/goreleaser-action@v3.1.0
         with:
           version: latest
           args: release --rm-dist
