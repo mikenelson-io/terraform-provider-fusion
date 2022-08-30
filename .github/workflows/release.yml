@@ -37,6 +37,9 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
       -
+        name: temp fix for gpg
+        run: export GPG_TTY=$(tty)
+      -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3.1.0
         with:
