@@ -40,8 +40,14 @@ jobs:
         name: temp fix for gpg
         run: export GPG_TTY=$(tty)
       -
-        name: temp fix for gpg
+        name: test
         run: echo $GPG_TTY
+      -
+        name: test
+        run: echo 1111111
+      -
+        name: test
+        run: echo $(tty)
       -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3.1.0
