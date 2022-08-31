@@ -40,11 +40,14 @@ jobs:
         name: temp fix for gpg
         run: export GPG_TTY=$(tty)
       -
+        name: temp fix for gpg
+        run: echo $GPG_TTY
+      -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3.1.0
         with:
           version: latest
-          args: release --rm-dist --debug
+          args: release --rm-dist
         env:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           # GitHub sets this automatically
