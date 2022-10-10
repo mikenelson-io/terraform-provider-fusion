@@ -61,6 +61,6 @@ Test can be run like normal go tests, for example:
 
 [terraform-install]: https://www.terraform.io/downloads.html
 [terraform-github]: https://github.com/hashicorp/terraform
-[provider-documentation]: https://registry.terraform.io/providers/PureStorage-OpenConnect/terraform-provider-fusion/latest/docs
+[provider-documentation]: https://registry.terraform.io/providers/PureStorage-OpenConnect/fusion/latest/docs
 [customer-support]: https://pure1.purestorage.com/support/cases
 [what-is-fusion]: https://www.purestorage.com/enable/pure-fusion.html
