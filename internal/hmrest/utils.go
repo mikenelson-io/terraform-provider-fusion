@@ -73,6 +73,33 @@ func (a *SnapshotsApiService) CreateSnapshotByPlacementGroup(
 	return a.CreateSnapshotBy(ctx, body, tenantName, tenantSpaceName, requestId)
 }
 
+func (a *VolumesApiService) CreateVolumeFromSnapshot(
+	ctx context.Context,
+	tenantName string,
+	tenantSpaceName string,
+	volumeName string,
+	displayName string,
+	storageClass string,
+	protectionPolicy string,
+	placementGroup string,
+	sourceVolumeSnapshotLink string,
+	requestId string) (Operation, error) {
+	body := VolumePost{
+		Name:             volumeName,
+		DisplayName:      displayName,
+		StorageClass:     storageClass,
+		ProtectionPolicy: protectionPolicy,
+		PlacementGroup:   placementGroup,
+		SourceLink:       sourceVolumeSnapshotLink,
+	}
+	op, _, err := a.CreateVolume(ctx, body, tenantName, tenantSpaceName, &VolumesApiCreateVolumeOpts{XRequestID: optional.NewString(requestId)})
+	if err != nil {
+		var empty Operation
+		return empty, fmt.Errorf("error creating volumes from snapshot: %w", err)
+	}
+	return op, nil
+}
+
 func (a *VolumesApiService) UpdateVolumeBy(
 	ctx context.Context,
 	tenantName string,

@@ -23,5 +23,5 @@ type Pure1MetaPlacementRecommendation struct {
 	DaysToReach90PercentCapacity  float64                                     `json:"days_to_reach_90_percent_capacity,omitempty"`
 	DaysToReach100PercentCapacity float64                                     `json:"days_to_reach_100_percent_capacity,omitempty"`
 	Error_                        string                                      `json:"error,omitempty"`
-	Warnings                      []string                                    `json:"warnings,omitempty"`
+	Warnings                      []Pure1MetaWarning                          `json:"warnings,omitempty"`
 }

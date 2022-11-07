@@ -14,10 +14,10 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// Data protection retention policy objective.
-type Retention struct {
-	// Type of the objective. \"RPO\" or \"Retention\".
-	Type_ string `json:"type"`
-	// Rentenion period: how long the snapshots will be retained.  Format: only support subset of **Durations** format in https://en.wikipedia.org/wiki/ISO_8601. 1. The time designators(P,T,H,M,S) must be capital letters.  2. Only accepts whole numbers.  3. Leading zeroes are not required.
-	After string `json:"after"`
+// Warnings returned from the PerfPlanner Recommendation Engine in Pure1Meta. Warnings do not prevent an array from being selected for Placement, but are noteworthy issues that a Provider should take a look, and might cause an array to have a lower recommendation score.
+type Pure1MetaWarning struct {
+	// Description of the warning
+	Message string `json:"message,omitempty"`
+	// Unique code identifying the warning
+	WarningCode string `json:"warning_code,omitempty"`
 }

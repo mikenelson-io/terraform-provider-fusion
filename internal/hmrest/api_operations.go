@@ -334,11 +334,12 @@ OperationsApiService Gets a list of Operations matching the criteria.
      * @param "RequestCollection" (optional.String) -  Default to \\\&quot;/\\\&quot;, valid values take the form \\\&quot;/\\\&quot;, \\\&quot;/tenants/&lt;tname&gt;\\\&quot;, or \\\&quot;/tenants/&lt;tname&gt;/tenant-spaces/&lt;tsname&gt;\\\&quot;
      * @param "ResourceKind" (optional.String) -  The kind of resource on which the Operation was performed.
      * @param "ResourceId" (optional.String) -  The ID of resource on which the Operation was performed.
-     * @param "Status" (optional.String) -  The status of the Operation.
-     * @param "Sort" (optional.String) -
+     * @param "Status" (optional.String) -  The status of the Operation. Support for comma separated multiple status is deprecated, use IN list instead
+     * @param "CreatedAfter" (optional.String) -
+     * @param "Filter" (optional.String) -  filter should use expression language for filtering
+     * @param "Sort" (optional.String) -  Returns the response items in the order specified. Set sort to the field(s) in the response by which to sort. Sorting can be performed on any of the fields in the response, and the items can be sorted in ascending or descending order by these fields. By default, the response items are sorted in ascending order. To sort in descending order, append the minus sign (-) to the field. A single request can be sorted on multiple fields. For example, you can sort all volumes from largest to smallest volume size, and then sort volumes of the same size in ascending order by volume name. To sort on multiple fields, list the fields as comma-separated values. (E.g. \&quot;sort&#x3D;size-,name\&quot;)
      * @param "Limit" (optional.Int32) -
      * @param "Offset" (optional.Int32) -
-     * @param "CreatedAfter" (optional.String) -
 @return OperationList
 */
 
@@ -352,10 +353,11 @@ type OperationsApiListOperationsOpts struct {
 	ResourceKind      optional.String
 	ResourceId        optional.String
 	Status            optional.String
+	CreatedAfter      optional.String
+	Filter            optional.String
 	Sort              optional.String
 	Limit             optional.Int32
 	Offset            optional.Int32
-	CreatedAfter      optional.String
 }
 
 func (a *OperationsApiService) ListOperations(ctx context.Context, localVarOptionals *OperationsApiListOperationsOpts) (OperationList, *http.Response, error) {
@@ -392,6 +394,12 @@ func (a *OperationsApiService) ListOperations(ctx context.Context, localVarOptio
 	if localVarOptionals != nil && localVarOptionals.Status.IsSet() {
 		localVarQueryParams.Add("status", parameterToString(localVarOptionals.Status.Value(), ""))
 	}
+	if localVarOptionals != nil && localVarOptionals.CreatedAfter.IsSet() {
+		localVarQueryParams.Add("created_after", parameterToString(localVarOptionals.CreatedAfter.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Filter.IsSet() {
+		localVarQueryParams.Add("filter", parameterToString(localVarOptionals.Filter.Value(), ""))
+	}
 	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
 		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
 	}
@@ -400,9 +408,6 @@ func (a *OperationsApiService) ListOperations(ctx context.Context, localVarOptio
 	}
 	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
 		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.CreatedAfter.IsSet() {
-		localVarQueryParams.Add("created_after", parameterToString(localVarOptionals.CreatedAfter.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}

@@ -20,13 +20,13 @@ type VolumePost struct {
 	// The display name of the resource.
 	DisplayName string `json:"display_name,omitempty"`
 	// The size of the volume to provision
-	Size int64 `json:"size"`
+	Size int64 `json:"size,omitempty"`
 	// The name of the Storage Class
 	StorageClass string `json:"storage_class"`
 	// The name of the Placement Group
 	PlacementGroup string `json:"placement_group"`
 	// The name of the Protection Policy
 	ProtectionPolicy string `json:"protection_policy,omitempty"`
-	// Unimplemented - The link to the volume snapshot to copy data from
-	SourceVolumeSnapshotLink string `json:"source_volume_snapshot_link,omitempty"`
+	// The link to copy data from. Supported sources - VolumeSnapshot
+	SourceLink string `json:"source_link,omitempty"`
 }

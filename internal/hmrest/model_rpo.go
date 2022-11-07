@@ -18,6 +18,6 @@ package fusion
 type Rpo struct {
 	// Type of the objective. \"RPO\" or \"Retention\".
 	Type_ string `json:"type"`
-	// RPO objective value in seconds. Format: https://en.wikipedia.org/wiki/ISO_8601
+	// RPO (Recovery Point Objective) value. Format: only support subset of **Durations** format in https://en.wikipedia.org/wiki/ISO_8601. 1. The time designators(P,T,H,M,S) must be capital letters.  2. Only accepts whole numbers.  3. Leading zeroes are not required.
 	Rpo string `json:"rpo"`
 }

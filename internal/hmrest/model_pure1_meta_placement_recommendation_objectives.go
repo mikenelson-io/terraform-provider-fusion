@@ -15,10 +15,10 @@ SPDX-License-Identifier: Apache-2.0
 package fusion
 
 type Pure1MetaPlacementRecommendationObjectives struct {
-	AvgPerf float64 `json:"avg_perf,omitempty"`
-	AvgCap  float64 `json:"avg_cap,omitempty"`
-	VarPerf float64 `json:"var_perf,omitempty"`
-	VarCap  float64 `json:"var_cap,omitempty"`
-	MaxPerf float64 `json:"max_perf,omitempty"`
-	MaxCap  float64 `json:"max_cap,omitempty"`
+	AvgPerfUsage float64 `json:"avg_perf_usage,omitempty"`
+	AvgCapUsage  float64 `json:"avg_cap_usage,omitempty"`
+	VarPerfUsage float64 `json:"var_perf_usage,omitempty"`
+	VarCapUsage  float64 `json:"var_cap_usage,omitempty"`
+	MaxPerfUsage float64 `json:"max_perf_usage,omitempty"`
+	MaxCapUsage  float64 `json:"max_cap_usage,omitempty"`
 }
