@@ -34,4 +34,6 @@ type PlacementRecommendation struct {
 	IncludedArrays []PlacementRecommendationIncludedArray `json:"included_arrays,omitempty"`
 	// A JSON array of Arrays that the Placement Group cannot be placed on
 	ExcludedArrays []PlacementRecommendationExcludedArray `json:"excluded_arrays,omitempty"`
+	// If present, this is the list of arrays that was provided when requesting the placement recommendation report to consider for placement recommendations
+	TargetArrays []ArrayRef `json:"target_arrays,omitempty"`
 }

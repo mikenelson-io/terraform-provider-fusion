@@ -476,3 +476,231 @@ func (a *VolumeSnapshotsApiService) ListVolumeSnapshots(ctx context.Context, ten
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+
+/*
+VolumeSnapshotsApiService (Opt-in) Get all Volume Snapshots in the org. Provide a filter to search for specific volume snapshots.
+ * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param optional nil or *VolumeSnapshotsApiQueryVolumeSnapshotsOpts - Optional Parameters:
+     * @param "Filter" (optional.String) -  filter should use expression language for filtering
+     * @param "Sort" (optional.String) -  Returns the response items in the order specified. Set sort to the field(s) in the response by which to sort. Sorting can be performed on any of the fields in the response, and the items can be sorted in ascending or descending order by these fields. By default, the response items are sorted in ascending order. To sort in descending order, append the minus sign (-) to the field. A single request can be sorted on multiple fields. For example, you can sort all volumes from largest to smallest volume size, and then sort volumes of the same size in ascending order by volume name. To sort on multiple fields, list the fields as comma-separated values. (E.g. \&quot;sort&#x3D;size-,name\&quot;)
+     * @param "Limit" (optional.Int32) -
+     * @param "Offset" (optional.Int32) -
+     * @param "Id" (optional.String) -
+     * @param "Name" (optional.String) -
+     * @param "DisplayName" (optional.String) -
+     * @param "TenantSpaceId" (optional.String) -
+     * @param "TenantId" (optional.String) -
+     * @param "Destroyed" (optional.Bool) -
+     * @param "SnapshotId" (optional.String) -
+     * @param "VolumeId" (optional.String) -
+     * @param "TimeRemaining" (optional.Int64) -
+     * @param "VolumeSerialNumber" (optional.String) -
+     * @param "PlacementGroupId" (optional.String) -
+     * @param "ProtectionPolicyId" (optional.String) -
+     * @param "CreatedAt" (optional.Int64) -
+     * @param "XRequestID" (optional.String) -  The Request ID supplied with the request, used to perform operations idempotently.
+     * @param "Authorization" (optional.String) -  Access token (in JWT format) required to use any API endpoint.
+     * @param "XCorrelationID" (optional.String) -  The Correlation ID provided will be added to log messages and can be used for support. The same Correlation ID may be used for separate requests, to track a higher level workflow.
+@return VolumeSnapshotList
+*/
+
+type VolumeSnapshotsApiQueryVolumeSnapshotsOpts struct {
+	Filter             optional.String
+	Sort               optional.String
+	Limit              optional.Int32
+	Offset             optional.Int32
+	Id                 optional.String
+	Name               optional.String
+	DisplayName        optional.String
+	TenantSpaceId      optional.String
+	TenantId           optional.String
+	Destroyed          optional.Bool
+	SnapshotId         optional.String
+	VolumeId           optional.String
+	TimeRemaining      optional.Int64
+	VolumeSerialNumber optional.String
+	PlacementGroupId   optional.String
+	ProtectionPolicyId optional.String
+	CreatedAt          optional.Int64
+	XRequestID         optional.String
+	Authorization      optional.String
+	XCorrelationID     optional.String
+}
+
+func (a *VolumeSnapshotsApiService) QueryVolumeSnapshots(ctx context.Context, localVarOptionals *VolumeSnapshotsApiQueryVolumeSnapshotsOpts) (VolumeSnapshotList, *http.Response, error) {
+	var (
+		localVarHttpMethod  = strings.ToUpper("Get")
+		localVarPostBody    interface{}
+		localVarFileName    string
+		localVarFileBytes   []byte
+		localVarReturnValue VolumeSnapshotList
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/resources/volume-snapshots"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if localVarOptionals != nil && localVarOptionals.Filter.IsSet() {
+		localVarQueryParams.Add("filter", parameterToString(localVarOptionals.Filter.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
+		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
+		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
+		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Name.IsSet() {
+		localVarQueryParams.Add("name", parameterToString(localVarOptionals.Name.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.DisplayName.IsSet() {
+		localVarQueryParams.Add("display_name", parameterToString(localVarOptionals.DisplayName.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TenantSpaceId.IsSet() {
+		localVarQueryParams.Add("tenant_space_id", parameterToString(localVarOptionals.TenantSpaceId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TenantId.IsSet() {
+		localVarQueryParams.Add("tenant_id", parameterToString(localVarOptionals.TenantId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Destroyed.IsSet() {
+		localVarQueryParams.Add("destroyed", parameterToString(localVarOptionals.Destroyed.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.SnapshotId.IsSet() {
+		localVarQueryParams.Add("snapshot_id", parameterToString(localVarOptionals.SnapshotId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.VolumeId.IsSet() {
+		localVarQueryParams.Add("volume_id", parameterToString(localVarOptionals.VolumeId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TimeRemaining.IsSet() {
+		localVarQueryParams.Add("time_remaining", parameterToString(localVarOptionals.TimeRemaining.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.VolumeSerialNumber.IsSet() {
+		localVarQueryParams.Add("volume_serial_number", parameterToString(localVarOptionals.VolumeSerialNumber.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PlacementGroupId.IsSet() {
+		localVarQueryParams.Add("placement_group_id", parameterToString(localVarOptionals.PlacementGroupId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.ProtectionPolicyId.IsSet() {
+		localVarQueryParams.Add("protection_policy_id", parameterToString(localVarOptionals.ProtectionPolicyId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.CreatedAt.IsSet() {
+		localVarQueryParams.Add("created_at", parameterToString(localVarOptionals.CreatedAt.Value(), ""))
+	}
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	if localVarOptionals != nil && localVarOptionals.XRequestID.IsSet() {
+		localVarHeaderParams["X-Request-ID"] = parameterToString(localVarOptionals.XRequestID.Value(), "")
+	}
+	if localVarOptionals != nil && localVarOptionals.Authorization.IsSet() {
+		localVarHeaderParams["Authorization"] = parameterToString(localVarOptionals.Authorization.Value(), "")
+	}
+	if localVarOptionals != nil && localVarOptionals.XCorrelationID.IsSet() {
+		localVarHeaderParams["X-Correlation-ID"] = parameterToString(localVarOptionals.XCorrelationID.Value(), "")
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		// If we succeed, return the data, otherwise pass on to decode error.
+		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+		if err == nil {
+			return localVarReturnValue, localVarHttpResponse, err
+		}
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body:  localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		if localVarHttpResponse.StatusCode == 200 {
+			var v VolumeSnapshotList
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		if localVarHttpResponse.StatusCode == 401 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		if localVarHttpResponse.StatusCode == 403 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		if localVarHttpResponse.StatusCode == 404 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		if localVarHttpResponse.StatusCode == 500 {
+			var v ErrorResponse
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		return localVarReturnValue, localVarHttpResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHttpResponse, nil
+}

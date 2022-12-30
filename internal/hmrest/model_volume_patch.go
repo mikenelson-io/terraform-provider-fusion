@@ -15,11 +15,12 @@ SPDX-License-Identifier: Apache-2.0
 package fusion
 
 type VolumePatch struct {
-	DisplayName              *NullableString `json:"display_name,omitempty"`
-	SourceVolumeSnapshotLink *NullableString `json:"source_volume_snapshot_link,omitempty"`
-	Size                     *NullableSize   `json:"size,omitempty"`
-	StorageClass             *NullableString `json:"storage_class,omitempty"`
-	PlacementGroup           *NullableString `json:"placement_group,omitempty"`
-	ProtectionPolicy         *NullableString `json:"protection_policy,omitempty"`
-	HostAccessPolicies       *NullableString `json:"host_access_policies,omitempty"`
+	DisplayName              *NullableString  `json:"display_name,omitempty"`
+	SourceVolumeSnapshotLink *NullableString  `json:"source_volume_snapshot_link,omitempty"`
+	Size                     *NullableSize    `json:"size,omitempty"`
+	StorageClass             *NullableString  `json:"storage_class,omitempty"`
+	PlacementGroup           *NullableString  `json:"placement_group,omitempty"`
+	ProtectionPolicy         *NullableString  `json:"protection_policy,omitempty"`
+	HostAccessPolicies       *NullableString  `json:"host_access_policies,omitempty"`
+	Destroyed                *NullableBoolean `json:"destroyed,omitempty"`
 }

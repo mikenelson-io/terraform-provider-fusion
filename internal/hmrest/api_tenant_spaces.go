@@ -1074,6 +1074,9 @@ TenantSpacesApiService (Opt-in) Get all Tenant Spaces in the org. Provide a filt
  * @param optional nil or *TenantSpacesApiQueryTenantSpacesOpts - Optional Parameters:
      * @param "Filter" (optional.String) -  filter should use expression language for filtering
      * @param "Sort" (optional.String) -  Returns the response items in the order specified. Set sort to the field(s) in the response by which to sort. Sorting can be performed on any of the fields in the response, and the items can be sorted in ascending or descending order by these fields. By default, the response items are sorted in ascending order. To sort in descending order, append the minus sign (-) to the field. A single request can be sorted on multiple fields. For example, you can sort all volumes from largest to smallest volume size, and then sort volumes of the same size in ascending order by volume name. To sort on multiple fields, list the fields as comma-separated values. (E.g. \&quot;sort&#x3D;size-,name\&quot;)
+     * @param "Limit" (optional.Int32) -
+     * @param "Offset" (optional.Int32) -
+     * @param "Id" (optional.String) -
      * @param "Name" (optional.String) -
      * @param "DisplayName" (optional.String) -
      * @param "TenantId" (optional.String) -
@@ -1086,6 +1089,9 @@ TenantSpacesApiService (Opt-in) Get all Tenant Spaces in the org. Provide a filt
 type TenantSpacesApiQueryTenantSpacesOpts struct {
 	Filter         optional.String
 	Sort           optional.String
+	Limit          optional.Int32
+	Offset         optional.Int32
+	Id             optional.String
 	Name           optional.String
 	DisplayName    optional.String
 	TenantId       optional.String
@@ -1115,6 +1121,15 @@ func (a *TenantSpacesApiService) QueryTenantSpaces(ctx context.Context, localVar
 	}
 	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
 		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
+		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
+		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
 	}
 	if localVarOptionals != nil && localVarOptionals.Name.IsSet() {
 		localVarQueryParams.Add("name", parameterToString(localVarOptionals.Name.Value(), ""))

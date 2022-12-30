@@ -1232,23 +1232,54 @@ func (a *PlacementGroupsApiService) ListPlacementGroups(ctx context.Context, ten
 /*
 PlacementGroupsApiService Returns a list of Placement Groups from query
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param regionName Region that array belongs to.
- * @param availabilityZoneName Availability zone that array belongs to.
- * @param arrayName Return placement-groups across all tenant spaces that are located on the array.
  * @param optional nil or *PlacementGroupsApiQueryPlacementGroupsOpts - Optional Parameters:
      * @param "XRequestID" (optional.String) -  The Request ID supplied with the request, used to perform operations idempotently.
      * @param "Authorization" (optional.String) -  Access token (in JWT format) required to use any API endpoint.
      * @param "XCorrelationID" (optional.String) -  The Correlation ID provided will be added to log messages and can be used for support. The same Correlation ID may be used for separate requests, to track a higher level workflow.
+     * @param "Filter" (optional.String) -  filter should use expression language for filtering
+     * @param "Sort" (optional.String) -  Returns the response items in the order specified. Set sort to the field(s) in the response by which to sort. Sorting can be performed on any of the fields in the response, and the items can be sorted in ascending or descending order by these fields. By default, the response items are sorted in ascending order. To sort in descending order, append the minus sign (-) to the field. A single request can be sorted on multiple fields. For example, you can sort all volumes from largest to smallest volume size, and then sort volumes of the same size in ascending order by volume name. To sort on multiple fields, list the fields as comma-separated values. (E.g. \&quot;sort&#x3D;size-,name\&quot;)
+     * @param "Limit" (optional.Int32) -
+     * @param "Offset" (optional.Int32) -
+     * @param "Id" (optional.String) -
+     * @param "Name" (optional.String) -
+     * @param "DisplayName" (optional.String) -
+     * @param "TenantSpaceId" (optional.String) -
+     * @param "TenantId" (optional.String) -
+     * @param "ArrayId" (optional.String) -
+     * @param "Iqn" (optional.String) -
+     * @param "StorageServiceId" (optional.String) -
+     * @param "AvailabilityZoneId" (optional.String) -
+     * @param "PlacementEngine" (optional.String) -
+     * @param "RegionName" (optional.String) -  Region that array belongs to.
+     * @param "AvailabilityZoneName" (optional.String) -  Availability zone that array belongs to.
+     * @param "ArrayName" (optional.String) -  Return placement-groups across all tenant spaces that are located on the array. (region_name and availability_zone_name required)
 @return PlacementGroupList
 */
 
 type PlacementGroupsApiQueryPlacementGroupsOpts struct {
-	XRequestID     optional.String
-	Authorization  optional.String
-	XCorrelationID optional.String
+	XRequestID           optional.String
+	Authorization        optional.String
+	XCorrelationID       optional.String
+	Filter               optional.String
+	Sort                 optional.String
+	Limit                optional.Int32
+	Offset               optional.Int32
+	Id                   optional.String
+	Name                 optional.String
+	DisplayName          optional.String
+	TenantSpaceId        optional.String
+	TenantId             optional.String
+	ArrayId              optional.String
+	Iqn                  optional.String
+	StorageServiceId     optional.String
+	AvailabilityZoneId   optional.String
+	PlacementEngine      optional.String
+	RegionName           optional.String
+	AvailabilityZoneName optional.String
+	ArrayName            optional.String
 }
 
-func (a *PlacementGroupsApiService) QueryPlacementGroups(ctx context.Context, regionName string, availabilityZoneName string, arrayName string, localVarOptionals *PlacementGroupsApiQueryPlacementGroupsOpts) (PlacementGroupList, *http.Response, error) {
+func (a *PlacementGroupsApiService) QueryPlacementGroups(ctx context.Context, localVarOptionals *PlacementGroupsApiQueryPlacementGroupsOpts) (PlacementGroupList, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
@@ -1264,9 +1295,57 @@ func (a *PlacementGroupsApiService) QueryPlacementGroups(ctx context.Context, re
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	localVarQueryParams.Add("region_name", parameterToString(regionName, ""))
-	localVarQueryParams.Add("availability_zone_name", parameterToString(availabilityZoneName, ""))
-	localVarQueryParams.Add("array_name", parameterToString(arrayName, ""))
+	if localVarOptionals != nil && localVarOptionals.Filter.IsSet() {
+		localVarQueryParams.Add("filter", parameterToString(localVarOptionals.Filter.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
+		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
+		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
+		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Name.IsSet() {
+		localVarQueryParams.Add("name", parameterToString(localVarOptionals.Name.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.DisplayName.IsSet() {
+		localVarQueryParams.Add("display_name", parameterToString(localVarOptionals.DisplayName.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TenantSpaceId.IsSet() {
+		localVarQueryParams.Add("tenant_space_id", parameterToString(localVarOptionals.TenantSpaceId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TenantId.IsSet() {
+		localVarQueryParams.Add("tenant_id", parameterToString(localVarOptionals.TenantId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.ArrayId.IsSet() {
+		localVarQueryParams.Add("array_id", parameterToString(localVarOptionals.ArrayId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Iqn.IsSet() {
+		localVarQueryParams.Add("iqn", parameterToString(localVarOptionals.Iqn.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.StorageServiceId.IsSet() {
+		localVarQueryParams.Add("storage_service_id", parameterToString(localVarOptionals.StorageServiceId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.AvailabilityZoneId.IsSet() {
+		localVarQueryParams.Add("availability_zone_id", parameterToString(localVarOptionals.AvailabilityZoneId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PlacementEngine.IsSet() {
+		localVarQueryParams.Add("placement_engine", parameterToString(localVarOptionals.PlacementEngine.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.RegionName.IsSet() {
+		localVarQueryParams.Add("region_name", parameterToString(localVarOptionals.RegionName.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.AvailabilityZoneName.IsSet() {
+		localVarQueryParams.Add("availability_zone_name", parameterToString(localVarOptionals.AvailabilityZoneName.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.ArrayName.IsSet() {
+		localVarQueryParams.Add("array_name", parameterToString(localVarOptionals.ArrayName.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
 

@@ -30,4 +30,6 @@ type PlacementRecommendationPost struct {
 	TenantSpace        string                  `json:"tenant_space"`
 	PlacementEngine    *PlacementEngine        `json:"placement_engine,omitempty"`
 	SimulatedPlacement *SimulatedPlacementPost `json:"simulated_placement,omitempty"`
+	// Optional argument. If provided, specify a list of array names to constraint the list of arrays under consideration for placement recommendations
+	TargetArrays []string `json:"target_arrays,omitempty"`
 }

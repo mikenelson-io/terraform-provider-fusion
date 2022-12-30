@@ -31,7 +31,9 @@ type VolumeSnapshot struct {
 	CreatedAt int64 `json:"created_at"`
 	// Volume snapshots with the same consistency_id are crash consistency.
 	ConsistencyId string `json:"consistency_id"`
-	// Unimplemented - The amount of time left until the destroyed volume snapshot is permanently eradicated. Measured in milliseconds.
+	// True if the volume snapshot has been destroyed and is pending eradication. The time_remaining value displays the amount of time left until the destroyed volume snapshot is permanently eradicated.
+	Destroyed bool `json:"destroyed,omitempty"`
+	// The amount of time left until the destroyed volume snapshot is permanently eradicated. Measured in milliseconds.
 	TimeRemaining int64 `json:"time_remaining,omitempty"`
 	// The virtual size of the volume snapshot. Measured in bytes.
 	Size             int64                `json:"size"`
