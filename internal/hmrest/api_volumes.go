@@ -942,13 +942,49 @@ VolumesApiService Gets a list of all Volumes.
      * @param "XRequestID" (optional.String) -  The Request ID supplied with the request, used to perform operations idempotently.
      * @param "Authorization" (optional.String) -  Access token (in JWT format) required to use any API endpoint.
      * @param "XCorrelationID" (optional.String) -  The Correlation ID provided will be added to log messages and can be used for support. The same Correlation ID may be used for separate requests, to track a higher level workflow.
+     * @param "Filter" (optional.String) -  filter should use expression language for filtering
+     * @param "Sort" (optional.String) -  Returns the response items in the order specified. Set sort to the field(s) in the response by which to sort. Sorting can be performed on any of the fields in the response, and the items can be sorted in ascending or descending order by these fields. By default, the response items are sorted in ascending order. To sort in descending order, append the minus sign (-) to the field. A single request can be sorted on multiple fields. For example, you can sort all volumes from largest to smallest volume size, and then sort volumes of the same size in ascending order by volume name. To sort on multiple fields, list the fields as comma-separated values. (E.g. \&quot;sort&#x3D;size-,name\&quot;)
+     * @param "Limit" (optional.Int32) -
+     * @param "Offset" (optional.Int32) -
+     * @param "Id" (optional.String) -
+     * @param "Name" (optional.String) -
+     * @param "DisplayName" (optional.String) -
+     * @param "SerialNumber" (optional.String) -
+     * @param "Size" (optional.Int64) -
+     * @param "CreatedAt" (optional.Int64) -
+     * @param "StorageClassId" (optional.String) -
+     * @param "PlacementGroupId" (optional.String) -
+     * @param "ProtectionPolicyId" (optional.String) -
+     * @param "ArrayId" (optional.String) -
+     * @param "SourceVolumeSnapshotId" (optional.String) -
+     * @param "Iqn" (optional.String) -
+     * @param "Destroyed" (optional.Bool) -
+     * @param "TimeRemaining" (optional.Int64) -
 @return VolumeList
 */
 
 type VolumesApiListVolumesOpts struct {
-	XRequestID     optional.String
-	Authorization  optional.String
-	XCorrelationID optional.String
+	XRequestID             optional.String
+	Authorization          optional.String
+	XCorrelationID         optional.String
+	Filter                 optional.String
+	Sort                   optional.String
+	Limit                  optional.Int32
+	Offset                 optional.Int32
+	Id                     optional.String
+	Name                   optional.String
+	DisplayName            optional.String
+	SerialNumber           optional.String
+	Size                   optional.Int64
+	CreatedAt              optional.Int64
+	StorageClassId         optional.String
+	PlacementGroupId       optional.String
+	ProtectionPolicyId     optional.String
+	ArrayId                optional.String
+	SourceVolumeSnapshotId optional.String
+	Iqn                    optional.String
+	Destroyed              optional.Bool
+	TimeRemaining          optional.Int64
 }
 
 func (a *VolumesApiService) ListVolumes(ctx context.Context, tenantName string, tenantSpaceName string, localVarOptionals *VolumesApiListVolumesOpts) (VolumeList, *http.Response, error) {
@@ -969,6 +1005,60 @@ func (a *VolumesApiService) ListVolumes(ctx context.Context, tenantName string, 
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Filter.IsSet() {
+		localVarQueryParams.Add("filter", parameterToString(localVarOptionals.Filter.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
+		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
+		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
+		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Name.IsSet() {
+		localVarQueryParams.Add("name", parameterToString(localVarOptionals.Name.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.DisplayName.IsSet() {
+		localVarQueryParams.Add("display_name", parameterToString(localVarOptionals.DisplayName.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.SerialNumber.IsSet() {
+		localVarQueryParams.Add("serial_number", parameterToString(localVarOptionals.SerialNumber.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Size.IsSet() {
+		localVarQueryParams.Add("size", parameterToString(localVarOptionals.Size.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.CreatedAt.IsSet() {
+		localVarQueryParams.Add("created_at", parameterToString(localVarOptionals.CreatedAt.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.StorageClassId.IsSet() {
+		localVarQueryParams.Add("storage_class_id", parameterToString(localVarOptionals.StorageClassId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.PlacementGroupId.IsSet() {
+		localVarQueryParams.Add("placement_group_id", parameterToString(localVarOptionals.PlacementGroupId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.ProtectionPolicyId.IsSet() {
+		localVarQueryParams.Add("protection_policy_id", parameterToString(localVarOptionals.ProtectionPolicyId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.ArrayId.IsSet() {
+		localVarQueryParams.Add("array_id", parameterToString(localVarOptionals.ArrayId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.SourceVolumeSnapshotId.IsSet() {
+		localVarQueryParams.Add("source_volume_snapshot_id", parameterToString(localVarOptionals.SourceVolumeSnapshotId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Iqn.IsSet() {
+		localVarQueryParams.Add("iqn", parameterToString(localVarOptionals.Iqn.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Destroyed.IsSet() {
+		localVarQueryParams.Add("destroyed", parameterToString(localVarOptionals.Destroyed.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TimeRemaining.IsSet() {
+		localVarQueryParams.Add("time_remaining", parameterToString(localVarOptionals.TimeRemaining.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
 
@@ -1104,6 +1194,7 @@ VolumesApiService (Opt-in) Get all Volumes in the org. Provide a filter to searc
      * @param "Iqn" (optional.String) -
      * @param "Destroyed" (optional.Bool) -
      * @param "TimeRemaining" (optional.Int64) -
+     * @param "HostAccessPolicyId" (optional.String) -
      * @param "XRequestID" (optional.String) -  The Request ID supplied with the request, used to perform operations idempotently.
      * @param "Authorization" (optional.String) -  Access token (in JWT format) required to use any API endpoint.
      * @param "XCorrelationID" (optional.String) -  The Correlation ID provided will be added to log messages and can be used for support. The same Correlation ID may be used for separate requests, to track a higher level workflow.
@@ -1131,6 +1222,7 @@ type VolumesApiQueryVolumesOpts struct {
 	Iqn                    optional.String
 	Destroyed              optional.Bool
 	TimeRemaining          optional.Int64
+	HostAccessPolicyId     optional.String
 	XRequestID             optional.String
 	Authorization          optional.String
 	XCorrelationID         optional.String
@@ -1211,6 +1303,9 @@ func (a *VolumesApiService) QueryVolumes(ctx context.Context, localVarOptionals 
 	}
 	if localVarOptionals != nil && localVarOptionals.TimeRemaining.IsSet() {
 		localVarQueryParams.Add("time_remaining", parameterToString(localVarOptionals.TimeRemaining.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.HostAccessPolicyId.IsSet() {
+		localVarQueryParams.Add("host_access_policy_id", parameterToString(localVarOptionals.HostAccessPolicyId.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}

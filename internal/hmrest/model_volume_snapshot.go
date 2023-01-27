@@ -33,7 +33,7 @@ type VolumeSnapshot struct {
 	ConsistencyId string `json:"consistency_id"`
 	// True if the volume snapshot has been destroyed and is pending eradication. The time_remaining value displays the amount of time left until the destroyed volume snapshot is permanently eradicated.
 	Destroyed bool `json:"destroyed,omitempty"`
-	// The amount of time left until the destroyed volume snapshot is permanently eradicated. Measured in milliseconds.
+	// The amount of time left until the destroyed volume snapshot is permanently eradicated. Only valid when destroyed is true. Measured in milliseconds. An expired but not yet eradicated volume snapshot has destroyed=true and time_remaining=0.
 	TimeRemaining int64 `json:"time_remaining,omitempty"`
 	// The virtual size of the volume snapshot. Measured in bytes.
 	Size             int64                `json:"size"`

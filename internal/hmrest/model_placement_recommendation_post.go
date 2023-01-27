@@ -14,7 +14,7 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-// (Provider)
+// (Provider) Request a Placement Recommendation report. If PlacementEngine is set to \"pure1meta\", in addition to Placement Recommendations, load and capacity projections will also be included in the report.
 type PlacementRecommendationPost struct {
 	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
 	Name string `json:"name"`

@@ -36,4 +36,6 @@ type PlacementRecommendation struct {
 	ExcludedArrays []PlacementRecommendationExcludedArray `json:"excluded_arrays,omitempty"`
 	// If present, this is the list of arrays that was provided when requesting the placement recommendation report to consider for placement recommendations
 	TargetArrays []ArrayRef `json:"target_arrays,omitempty"`
+	// Number of milliseconds left before this Placement Recommendation report is deleted
+	TimeRemaining int64 `json:"time_remaining,omitempty"`
 }

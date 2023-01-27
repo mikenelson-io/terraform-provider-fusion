@@ -644,17 +644,37 @@ SnapshotsApiService Gets a list of Snapshots.
      * @param "XRequestID" (optional.String) -  The Request ID supplied with the request, used to perform operations idempotently.
      * @param "Authorization" (optional.String) -  Access token (in JWT format) required to use any API endpoint.
      * @param "XCorrelationID" (optional.String) -  The Correlation ID provided will be added to log messages and can be used for support. The same Correlation ID may be used for separate requests, to track a higher level workflow.
+     * @param "Filter" (optional.String) -  filter should use expression language for filtering
+     * @param "Sort" (optional.String) -  Returns the response items in the order specified. Set sort to the field(s) in the response by which to sort. Sorting can be performed on any of the fields in the response, and the items can be sorted in ascending or descending order by these fields. By default, the response items are sorted in ascending order. To sort in descending order, append the minus sign (-) to the field. A single request can be sorted on multiple fields. For example, you can sort all volumes from largest to smallest volume size, and then sort volumes of the same size in ascending order by volume name. To sort on multiple fields, list the fields as comma-separated values. (E.g. \&quot;sort&#x3D;size-,name\&quot;)
+     * @param "Limit" (optional.Int32) -
+     * @param "Offset" (optional.Int32) -
+     * @param "Id" (optional.String) -
+     * @param "Name" (optional.String) -
+     * @param "DisplayName" (optional.String) -
+     * @param "ProtectionPolicyId" (optional.String) -
+     * @param "Destroyed" (optional.Bool) -
+     * @param "TimeRemaining" (optional.Int64) -
      * @param "Volume" (optional.String) -  Returns only snapshots which contain the given volume
      * @param "PlacementGroup" (optional.String) -  Returns only snapshots in the specified placement group. Cannot be specified together with volume
 @return SnapshotList
 */
 
 type SnapshotsApiListSnapshotsOpts struct {
-	XRequestID     optional.String
-	Authorization  optional.String
-	XCorrelationID optional.String
-	Volume         optional.String
-	PlacementGroup optional.String
+	XRequestID         optional.String
+	Authorization      optional.String
+	XCorrelationID     optional.String
+	Filter             optional.String
+	Sort               optional.String
+	Limit              optional.Int32
+	Offset             optional.Int32
+	Id                 optional.String
+	Name               optional.String
+	DisplayName        optional.String
+	ProtectionPolicyId optional.String
+	Destroyed          optional.Bool
+	TimeRemaining      optional.Int64
+	Volume             optional.String
+	PlacementGroup     optional.String
 }
 
 func (a *SnapshotsApiService) ListSnapshots(ctx context.Context, tenantName string, tenantSpaceName string, localVarOptionals *SnapshotsApiListSnapshotsOpts) (SnapshotList, *http.Response, error) {
@@ -675,6 +695,36 @@ func (a *SnapshotsApiService) ListSnapshots(ctx context.Context, tenantName stri
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Filter.IsSet() {
+		localVarQueryParams.Add("filter", parameterToString(localVarOptionals.Filter.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Sort.IsSet() {
+		localVarQueryParams.Add("sort", parameterToString(localVarOptionals.Sort.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
+		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Offset.IsSet() {
+		localVarQueryParams.Add("offset", parameterToString(localVarOptionals.Offset.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
+		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Name.IsSet() {
+		localVarQueryParams.Add("name", parameterToString(localVarOptionals.Name.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.DisplayName.IsSet() {
+		localVarQueryParams.Add("display_name", parameterToString(localVarOptionals.DisplayName.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.ProtectionPolicyId.IsSet() {
+		localVarQueryParams.Add("protection_policy_id", parameterToString(localVarOptionals.ProtectionPolicyId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Destroyed.IsSet() {
+		localVarQueryParams.Add("destroyed", parameterToString(localVarOptionals.Destroyed.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.TimeRemaining.IsSet() {
+		localVarQueryParams.Add("time_remaining", parameterToString(localVarOptionals.TimeRemaining.Value(), ""))
+	}
 	if localVarOptionals != nil && localVarOptionals.Volume.IsSet() {
 		localVarQueryParams.Add("volume", parameterToString(localVarOptionals.Volume.Value(), ""))
 	}

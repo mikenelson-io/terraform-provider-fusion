@@ -28,7 +28,7 @@ type Snapshot struct {
 	// The URI of volume snapshots in the snapshot.
 	VolumeSnapshotsLink string               `json:"volume_snapshots_link"`
 	ProtectionPolicy    *ProtectionPolicyRef `json:"protection_policy,omitempty"`
-	// The amount of time left until the destroyed snapshot is permanently eradicated. Measured in milliseconds. Before the time_remaining period has elapsed, the destroyed snapshot can be recovered by setting destroyed=false.
+	// The amount of time left until the destroyed snapshot is permanently eradicated. Only valid when destroyed is true. Measured in milliseconds. Before the time_remaining period has elapsed, the destroyed snapshot can be recovered by setting destroyed=false. An expired but not yet eradicated snapshot has destroyed=true and time_remaining=0.
 	TimeRemaining int64 `json:"time_remaining,omitempty"`
 	// True if the snapshot has been destroyed and is pending eradication. The time_remaining value displays the amount of time left until the destroyed snapshot is permanently eradicated. Before the time_remaining period has elapsed, the destroyed snapshot can be recovered by setting destroyed=false. Once the time_remaining period has elapsed, the snapshot is permanently eradicated and can no longer be recovered.
 	Destroyed bool `json:"destroyed,omitempty"`

@@ -37,7 +37,7 @@ type Volume struct {
 	// Volume Serial Numbers, aka LUN Serial Numbers. This will be visible to initiators that connect to the volume.
 	SerialNumber string  `json:"serial_number"`
 	Target       *Target `json:"target,omitempty"`
-	// The amount of time left until the destroyed volume is permanently eradicated. Measured in milliseconds. Before the time_remaining period has elapsed, the destroyed volume can be recovered by setting destroyed=false.
+	// The amount of time left until the destroyed volume is permanently eradicated. Only valid when destroyed is true. Measured in milliseconds. Before the time_remaining period has elapsed, the destroyed volume can be recovered by setting destroyed=false. An expired but not yet eradicated volume has destroyed=true and time_remaining=0.
 	TimeRemaining int64 `json:"time_remaining,omitempty"`
 	// True if the volume has been destroyed and is pending eradication. The time_remaining value displays the amount of time left until the destroyed volume is permanently eradicated. Before the time_remaining period has elapsed, the destroyed volume can be recovered by setting destroyed=false. Once the time_remaining period has elapsed, the volume is permanently eradicated and can no longer be recovered.
 	Destroyed bool `json:"destroyed,omitempty"`
