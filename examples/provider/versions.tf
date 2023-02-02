@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     fusion = {
-      source  = "purestorage/fusion"
+      source  = "PureStorage-OpenConnect/fusion"
     }
   }
 }
