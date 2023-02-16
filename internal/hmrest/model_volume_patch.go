@@ -17,6 +17,7 @@ package fusion
 type VolumePatch struct {
 	DisplayName              *NullableString  `json:"display_name,omitempty"`
 	SourceVolumeSnapshotLink *NullableString  `json:"source_volume_snapshot_link,omitempty"`
+	SourceLink               *NullableString  `json:"source_link,omitempty"`
 	Size                     *NullableSize    `json:"size,omitempty"`
 	StorageClass             *NullableString  `json:"storage_class,omitempty"`
 	PlacementGroup           *NullableString  `json:"placement_group,omitempty"`

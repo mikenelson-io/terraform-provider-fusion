@@ -16,5 +16,5 @@ package fusion
 
 // (Provider)
 type StorageEndpointIscsi struct {
-	DiscoveryInterfaces []StorageEndpointIscsiDiscoveryInterface `json:"discovery_interfaces"`
+	DiscoveryInterfaces []StorageEndpointIscsiDiscoveryInterface `json:"discovery_interfaces,omitempty"`
 }

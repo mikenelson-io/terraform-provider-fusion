@@ -100,6 +100,32 @@ func (a *VolumesApiService) CreateVolumeFromSnapshot(
 	return op, nil
 }
 
+func (a *VolumesApiService) CreateVolumeFromVolume(
+	ctx context.Context,
+	tenantName string,
+	tenantSpaceName string,
+	volumeName string,
+	displayName string,
+	storageClass string,
+	protectionPolicy string,
+	placementGroup string,
+	sourceVolumeLink string,
+	requestId string) (Operation, error) {
+	body := VolumePost{
+		Name:             volumeName,
+		DisplayName:      displayName,
+		StorageClass:     storageClass,
+		ProtectionPolicy: protectionPolicy,
+		PlacementGroup:   placementGroup,
+		SourceLink:       sourceVolumeLink,
+	}
+	op, _, err := a.CreateVolume(ctx, body, tenantName, tenantSpaceName, &VolumesApiCreateVolumeOpts{XRequestID: optional.NewString(requestId)})
+	if err != nil {
+		return Operation{}, fmt.Errorf("error creating volumes from volume: %w", err)
+	}
+	return op, nil
+}
+
 func (a *VolumesApiService) UpdateVolumeBy(
 	ctx context.Context,
 	tenantName string,
@@ -172,14 +198,14 @@ func (a *VolumesApiService) UpdateVolumeProtectionPolicy(
 	return a.UpdateVolumeBy(ctx, tenantName, tenantSpaceName, volumeName, patch, requestId)
 }
 
-func (a *VolumesApiService) UpdateVolumeFromSnapshot(
+func (a *VolumesApiService) UpdateVolumeFromSource(
 	ctx context.Context,
 	tenantName string,
 	tenantSpaceName string,
 	volumeName string,
-	volumeSnapshotLink string,
+	sourceLink string,
 	requestId string) (Operation, error) {
-	patch := VolumePatch{SourceVolumeSnapshotLink: &NullableString{volumeSnapshotLink}}
+	patch := VolumePatch{SourceLink: &NullableString{sourceLink}}
 	return a.UpdateVolumeBy(ctx, tenantName, tenantSpaceName, volumeName, patch, requestId)
 }
 

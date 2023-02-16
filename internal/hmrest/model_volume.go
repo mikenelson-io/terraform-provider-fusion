@@ -33,6 +33,7 @@ type Volume struct {
 	Array                *ArrayRef             `json:"array,omitempty"`
 	CreatedAt            int64                 `json:"created_at,omitempty"`
 	SourceVolumeSnapshot *VolumeSnapshotRef    `json:"source_volume_snapshot,omitempty"`
+	Source               *ResourceReference    `json:"source,omitempty"`
 	HostAccessPolicies   []HostAccessPolicyRef `json:"host_access_policies,omitempty"`
 	// Volume Serial Numbers, aka LUN Serial Numbers. This will be visible to initiators that connect to the volume.
 	SerialNumber string  `json:"serial_number"`

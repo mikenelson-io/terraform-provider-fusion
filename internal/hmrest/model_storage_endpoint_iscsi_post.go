@@ -15,5 +15,5 @@ SPDX-License-Identifier: Apache-2.0
 package fusion
 
 type StorageEndpointIscsiPost struct {
-	DiscoveryInterfaces []StorageEndpointIscsiDiscoveryInterfacePost `json:"discovery_interfaces"`
+	DiscoveryInterfaces []StorageEndpointIscsiDiscoveryInterfacePost `json:"discovery_interfaces,omitempty"`
 }

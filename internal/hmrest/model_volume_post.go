@@ -27,6 +27,6 @@ type VolumePost struct {
 	PlacementGroup string `json:"placement_group"`
 	// The name of the Protection Policy
 	ProtectionPolicy string `json:"protection_policy,omitempty"`
-	// The link to copy data from. Supported sources - VolumeSnapshot
+	// The link to copy data from. Supported sources - VolumeSnapshot, Volume
 	SourceLink string `json:"source_link,omitempty"`
 }

@@ -15,13 +15,10 @@ SPDX-License-Identifier: Apache-2.0
 package fusion
 
 // (Provider)
-type StorageEndpointPost struct {
-	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
-	Name string `json:"name"`
-	// The display name of the resource.
-	DisplayName string `json:"display_name,omitempty"`
-	// The endpoint type.
-	EndpointType  string                            `json:"endpoint_type"`
-	Iscsi         *StorageEndpointIscsiPost         `json:"iscsi,omitempty"`
-	CbsAzureIscsi *StorageEndpointCbsAzureIscsiPost `json:"cbs_azure_iscsi,omitempty"`
+type StorageEndpointCbsAzureIscsi struct {
+	// The Storage Endpoint Collection Identity which belongs to the Azure entities.
+	StorageEndpointCollectionIdentity string `json:"storage_endpoint_collection_identity,omitempty"`
+	// The Load Balancer id which gives permissions to CBS array appliations to modify the Load Balancer.
+	LoadBalancer          string   `json:"load_balancer,omitempty"`
+	LoadBalancerAddresses []string `json:"load_balancer_addresses,omitempty"`
 }

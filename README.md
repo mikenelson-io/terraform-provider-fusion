@@ -1,7 +1,6 @@
 # Terraform Provider for Pure Storage Fusion
 
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/PureStorage-OpenConnect/terraform-provider-fusion?label=release&style=for-the-badge)](https://github.com/PureStorage-OpenConnect/terraform-provider-fusion/releases/latest) [![License](https://img.shields.io/github/license/PureStorage-OpenConnect/terraform-provider-fusion.svg?style=for-the-badge)](LICENSE)
-![GitHub all releases](https://img.shields.io/github/downloads/PureStorage-OpenConnect/terraform-provider-fusion/total?color=orange&label=Downloads&style=for-the-badge)
 
 The Terraform Provider for [Fusion][what-is-fusion] is a plugin for Terraform that allows you to interact with Fusion.  Fusion is a Pure Storage product that allows you to provision, manage, and consume enterprise storage with the simple on-demand provisioning, with effortless scale, and self-management of the cloud.  Read more about fusion [here][what-is-fusion]. This provider can be used to manage consumer oriented resources such as volumes, hosts, placement groups, tenant spaces.
 

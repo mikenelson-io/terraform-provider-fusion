@@ -26,6 +26,7 @@ type StorageEndpoint struct {
 	Region           *RegionRef           `json:"region,omitempty"`
 	AvailabilityZone *AvailabilityZoneRef `json:"availability_zone,omitempty"`
 	// The endpoint type.
-	EndpointType string                `json:"endpoint_type"`
-	Iscsi        *StorageEndpointIscsi `json:"iscsi,omitempty"`
+	EndpointType  string                        `json:"endpoint_type"`
+	Iscsi         *StorageEndpointIscsi         `json:"iscsi,omitempty"`
+	CbsAzureIscsi *StorageEndpointCbsAzureIscsi `json:"cbs_azure_iscsi,omitempty"`
 }
