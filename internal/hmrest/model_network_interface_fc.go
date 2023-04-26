@@ -14,11 +14,8 @@ SPDX-License-Identifier: Apache-2.0
  */
 package fusion
 
-type ProtectionPolicyPost struct {
-	// The name of the resource, supplied by the user at creation, and used in the URI path of a resource.
-	Name string `json:"name"`
-	// The display name of the resource.
-	DisplayName string `json:"display_name,omitempty"`
-	// A JSON array of objectives
-	Objectives []OneOfProtectionPolicyPostObjectivesItems `json:"objectives"`
+// A Fibre Channel port on an Array
+type NetworkInterfaceFc struct {
+	// World Wide Name of the specified Fibre Channel port.
+	Wwn string `json:"wwn,omitempty"`
 }
